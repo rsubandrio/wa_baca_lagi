@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WASpoiler - By Rio Subandrio</title>
+</head>
+<style>
+    :root {
+        --primary-color: #0052cc;
+        --secondary-color: #00217c;
+    }
+
+    html,
+    body {
+        /* https://css-tricks.com/couple-takes-sticky-footer/ */
+        height: 100%;
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: 'Roboto', sans-serif;
+        display: flex;
+        flex-direction: column;
+    }
+    a {
+        color: #ff7f50;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    label, input, textarea, button, select {
+        font-family: 'Roboto', sans-serif;
+        font-size: 1em;
+        padding: .2em;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    input, textarea, select {
+        margin-bottom: .5em;
+    }
+
+    button {
+        margin-bottom: .5em;
+    }
+
+    /* For sticky footer - grow to fill the space */
+    .content {
+        flex: 1 0 auto;
+    }
+
+    .container {
+        width: 90%;
+        margin: 0 auto;
+        overflow: none;
+        padding: 10px;
+    }
+
+    header {
+        background: var(--primary-color);
+        box-shadow: 3px 3px 10px #888888;
+        color: #ffffff;
+    }
+
+    header .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        /* justify-content: space-between; */
+        justify-content: center;
+        padding: 15px 10px;
+    }
+
+    .subheader {
+        background: var(--secondary-color);
+        color: #fff;
+        box-shadow: 3px 3px 10px #888888;
+        font-size: 14px;
+        padding: 10px;
+        width: 90%;
+        margin: 0 auto 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .subheader p {
+        margin: 4px;
+    }
+
+    .form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    footer {
+        flex-shrink: 0;
+        background: #f4f4f4;
+        color: #444;
+        padding: 10px;
+        font-size: 14px;
+        margin-top: 10px;
+    }
+
+    footer ul {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    footer ul li {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    footer a {
+        color: var(--secondary-color);
+    }
+
+    #splash {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: var(--primary-color);
+        height: 100vh;
+        width: 100%;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        opacity: 1;
+        transition: opacity 1s;
+    }
+
+    #splash.fade {
+        opacity: 0;
+    }
+</style>
+<script>
+    function buatPesan() {
+        let pesan;
+        let pembuka = document.getElementById('pembuka').value;
+        let jarak = document.getElementById('jarak').value;
+        let akhir = document.getElementById('akhir').value;
+        let tombolSalin = document.getElementById('salin');
+        if (pembuka == "" || akhir == "") {
+            pesan = 'Text pembuka dan text lanjutan tidak boleh kosong';
+            salin.disabled = true;
+            if (pembuka == "") {
+                document.getElementById('pembuka').focus();
+            } else {
+                document.getElementById('akhir').focus();
+            }
+        } else {
+            pesan = pembuka + "\r\n" + jarak + '\u200b'.repeat(4000) + akhir;
+            salin.disabled = false;
+        }
+
+        document.getElementById('pesan').value = pesan;
+
+        // var message = warning + separator + '\u200B'.repeat(4000) + content;
+    }
+
+    function salinPesan() {
+        document.getElementById('pesan').select();
+        document.execCommand('copy');
+    }
+
+    function mulaiUlang() {
+        document.getElementById('salin').disabled = true;
+        document.getElementById('pembuka').value = "";
+        document.getElementById('akhir').value = "";
+        document.getElementById('pesan').value = "";
+    }
+</script>
+
+<body>
+    <!-- <div id="splash">
+        This is splash text
+    </div> -->
+    <div class="content">
+        <header>
+            <div class="container">
+                <h1>WASpoiler</h1>
+            </div>
+        </header>
+        <div class="subheader">
+            <p>Please visit <a href="youtube.com/">my youtube chanel</a></p>
+        </div>
+        <div class="container">
+            <div class="form">
+                <label for="pembuka">Text Pembuka:</label>
+                <textarea name="pembuka" id="pembuka" rows="2" placeholder="Pesan pembuka..."></textarea>
+
+                <label for="jarak">Jarak</label>
+                <select name="jarak" id="jarak">
+                    <option value=" ">Satu spasi (isi pesan akan terlihat jika dikutip)</option>
+                    <option selected value="
+
+
+">Tiga baris (memastikan pesan tidak terlihat ketika di kutip)</option>
+                </select>
+
+                <label for="akhir">Text Lanjutan</label>
+                <textarea name="akhir" id="akhir" rows="3" placeholder="Pesan lanjutan"></textarea>
+
+                <button onclick="buatPesan()">Buat Pesan</button>
+                
+                <textarea name="pesan" id="pesan" rows="4" readonly></textarea>
+                
+                <button disabled onclick="salinPesan()" id="salin">Salin Pesan</button>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <ul>
+            <li><a href="https://facebook.com/rsubandrio" target="_blank" rel="noopener noreferrer">Facebook</a></li>
+            <li><a href="https://www.youtube.com/channel/UCXNWQDu_nw1zDFis-dFUsSQ?sub_confirmation=1" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+            <li><a href="https://github.com/rsubandrio" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+        </ul>
+    </footer>
+    <script>
+        mulaiUlang();
+    </script>
+</body>
+</html>
